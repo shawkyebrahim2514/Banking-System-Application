@@ -1,5 +1,6 @@
 package bank;
 
+import bank.structure.BankAccountType;
 import bank.structure.User;
 
 import java.sql.PreparedStatement;
@@ -102,13 +103,26 @@ public class BankRegistration {
         return address;
     }
 
-    private static String registerEmail() {
+    private static String registerEmail() throws SQLException {
         String email;
+        boolean uniqueEmail;
         do {
             System.out.print("Enter your email: ");
             email = BankUtil.scanner.nextLine();
-        } while (!BankUtil.checkEmail(email));
+            uniqueEmail = checkUniqueEmail(email);
+            if (!uniqueEmail) {
+                BankUtil.createMessage("This email is used before!");
+            }
+        } while (!BankUtil.checkEmail(email) || !uniqueEmail);
         return email;
+    }
+
+    private static boolean checkUniqueEmail(String email) throws SQLException {
+        String SQLStatement = "SELECT * FROM usersInfo WHERE email = ?";
+        PreparedStatement statement = BankUtil.connection.prepareStatement(SQLStatement);
+        statement.setString(1, email);
+        ResultSet result = statement.executeQuery();
+        return !result.next();
     }
 
     private static void saveNewUser(User user) throws SQLException {

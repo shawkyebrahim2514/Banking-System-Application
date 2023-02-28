@@ -1,12 +1,15 @@
 package bank.structure;
 
+import bank.BankUtil;
+
 public enum Currency {
     DOLLAR("Dollar", '$'),
     EURO("Euro", '€'),
     JapaneseYen("Japanese yen", '¥'),
     GreatBritishPound("Great British Pound", '£');
+
     public static void showAll() {
-        System.out.println("There are 4 types of currencies:");
+        BankUtil.createMessage("There are 4 types of currencies");
         System.out.println(Currency.DOLLAR);
         System.out.println(Currency.EURO);
         System.out.println(Currency.JapaneseYen);
@@ -16,6 +19,7 @@ public enum Currency {
     public static Currency typeInIndex(Integer index) {
         return Currency.values()[index];
     }
+
     private final Character symbol;
 
     private final String name;

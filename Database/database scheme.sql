@@ -50,16 +50,17 @@ values ('ACTIVE'),
 
 create table currencies
 (
-    id   int auto_increment primary key,
-    name varchar(10) not null
+    id     int auto_increment primary key,
+    symbol varchar(3)  not null,
+    name   varchar(20) not null
 );
 
 # Dollar, Euro, Japanese Yen, Great British Pound
-insert into currencies(name)
-values ('$'),
-       ('€'),
-       ('¥'),
-       ('£');
+insert into currencies(name, symbol)
+values ('Dollar', '$'),
+       ('Euro', '€'),
+       ('Japanese yen', '¥'),
+       ('Great British Pound', '£');
 
 create table userBankAccount
 (
@@ -94,8 +95,8 @@ CREATE TABLE transactions
 (
     id        INT AUTO_INCREMENT PRIMARY KEY,
     username  varchar(50) NOT NULL,
-    amount    INT NOT NULL,
-    typeID    int NOT NULL,
+    amount    INT         NOT NULL,
+    typeID    int         NOT NULL,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (username) REFERENCES users (username),
     FOREIGN KEY (typeID) REFERENCES transactionTypes (id)
@@ -130,25 +131,40 @@ CREATE TABLE logs
     FOREIGN KEY (activityID) REFERENCES activityTypes (id)
 );
 
-CREATE TRIGGER update_balance
+-- insert changing of password in logs
+CREATE TRIGGER insert_changePassword_into_logs
+    AFTER UPDATE
+    ON users
+    FOR EACH ROW
+BEGIN
+    insert into logs(username, activityID) values (new.username, 5);
+END;
+
+-- insert changing of personal info in logs
+CREATE TRIGGER insert_changePersonalInfo_into_logs
+    AFTER UPDATE
+    ON usersInfo
+    FOR EACH ROW
+BEGIN
+    insert into logs(username, activityID) values (new.username, 6);
+END;
+
+-- insert open a new bank account in logs
+CREATE TRIGGER insert_openBankAccount_into_logs
     AFTER INSERT
     ON userBankAccount
     FOR EACH ROW
 BEGIN
-    DECLARE interest_amount INT;
-    SELECT FLOOR((NEW.balance * bankAccountTypes.interest) / 100)
-    INTO interest_amount
-    FROM bankAccountTypes
-    WHERE bankAccountTypes.id = NEW.typeID
-      AND NEW.balance >= bankAccountTypes.minimumBalanceToInterest;
-    IF (interest_amount > 0) THEN
-        UPDATE userBankAccount SET balance = balance + interest_amount WHERE id = NEW.id;
-    END IF;
+    insert into logs(username, activityID) values (new.username, 7);
 END;
 
-CREATE EVENT update_balance_event
-    ON SCHEDULE
-        EVERY 1 YEAR
-            STARTS NOW()
-    DO
-    CALL update_balance;
+-- insert close a bank account in logs (if the status id is for closed status)
+CREATE TRIGGER insert_closeBankAccount_into_logs
+    AFTER UPDATE
+    ON userBankAccount
+    FOR EACH ROW
+BEGIN
+    if (new.statusID = 2) then
+        insert into logs(username, activityID) values (new.username, 8);
+    end if;
+END;

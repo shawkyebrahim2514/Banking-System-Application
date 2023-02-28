@@ -1,5 +1,7 @@
 package bank.structure;
 
+import bank.BankUtil;
+
 public enum BankAccountType {
     BASIC(
             "Basic", 0, 2, 4, 1000, 50
@@ -9,7 +11,7 @@ public enum BankAccountType {
     );
 
     public static void showAll() {
-        System.out.println("There are 2 types of bank accounts:\n");
+        BankUtil.createMessage("There are 2 types of bank accounts");
         System.out.println(BankAccountType.BASIC);
         System.out.println();
         System.out.println(BankAccountType.SAVING);

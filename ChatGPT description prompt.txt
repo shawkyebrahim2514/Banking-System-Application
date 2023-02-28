@@ -1,0 +1,29 @@
+edit the user bank account to have the number of valid limit of withdrawal
+
+This project for a bank system application, i build this project to apply what i learned from java like OO principles and clean code, in this project i used MySQL database to store and load users data
+The structure of the project files as follow:
+Structure classes(Scheme): ActivityType, BankAccountStatus, BankAccountType, Currency, Log, Transaction, TransactionType, User, UserBankAccount
+Main class(Execute the program): BankApplication, BankChnageUserProfileInfo, BankCloseAccount, BankDeposit, BankLogin, BankLogs, BankOpenAccount, BankRegistration, BankTransactions, BankTransfer, BankUserProfile, BankUtil, BankViewAccounts, BankWithdrawal
+Below is the purpose of each structure class:
+ActivityType: this is an enum class, this enum class has all posible activities that user can do in this project, this enum class is used to make a log , these activities are (Login, Logout, View bank account, ciew transaction history, change password, update personal info, open new bank account, close bank account, deposit, withdrawal, transfer
+BankAccountStatus: This is an enum class, this enum class contains possible status of the bank account (Acitve, Closed, or pending)
+BankAccountType: This is an enum class, this enum class contains the two types of the bank account(basic or saving)
+the basic bank account has: (minimum balance to be in account = 0, fees = 2%, interest = 4%, minimum balance to get interest = 1000, the number of withdrawal limits per month = 50)
+the saving bank account has: (minimum balance to be in account = 500, fees = 3%, interest = 5%, minimum balance to get interest = 750, the number of withdrawal limits per month = 150)
+Currency: this is an enum class, this enum class contains the allowed currency type in this bank(Dollar, Euro, Japanese yen, Great british pound)
+Log: thos class is used to store the log data to print it or to store it in the database, this class contains (this log type with ActivityType datatype, a string to represent the date of creation this log)
+Transaction: this class is used to to store the transaction data to print it or store it in the database, this class contains (the amount of the transaction operation, the type of this transaction with TransactionType datatype, string to represent the date when this transaction is created)
+TransactionType: this is an enum class, this enum class contains all transaction types (deposit, withdrawal, transfer)
+User: this class is used to store the user data to print or to store it to the database, this class contains (username, password, first name, last name, phone number, address, email)
+UserBankAccount: this class is used to store the user bank account data to print it or to store it in the database, this class contains (its type with BankAccountType datatype, its status with BankAccountStatus datatype, balance, currency with Currency as a datatype, the date of creating this bank account)
+
+i will provide you also with responsibility of each main class
+The BankApplication class is the main class that user can make an instance of it to execute this this app
+When run this application, user can choose from the list (Login, Register, Exit)
+In the BankLogin class, it handles all functions to login the users
+In the BankRegistration class, it handles all registration of new users, new users should enter (username, passsword, first name, last name, phone number, email, address)
+After user login, he will redirect to his profile that class BanlUserProfile handles all its functions, in this user profile, users can (change their profile information, view their bank accounts, open new bank account, view their log, exit)
+if user enters to perform change his profile information, the BankChangeUserProfileInfo will take handling its functions, users can (change their password, change their first name, change their last name, change their phone number, change their address, change their email)
+if user enters to perform view his bank accounts, the BankViewAccounts take handling its functions, it will show all user's bank accounts in order number, and user will choose to perform one of these functions on one of only his active bank account( deposit, withdraw, transfer, show transactions, close bank account)
+if user enters to perform open a new bank account, the BankOpenAccount take ahndling its functions, it will show all bank accoutns' types to choose from, and to enter the type of this account currency's type, and enter the initial balance to this bank account according to the type of this bank account
+if users enters to perform view his logs, the BankLogs take handling its function, it will show all logs that belongs to this user

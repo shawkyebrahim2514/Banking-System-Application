@@ -14,6 +14,7 @@ public class BankUserProfile {
         BankUtil.insertIntoLogTable(new Log(
                 user.getUsername(), ActivityType.LOGIN, null
         ));
+        BankUtil.createHeader("Welcome, " + user.getFirstName() + " " + user.getLastName());
         Integer choice;
         do {
             showProfileFunctions();

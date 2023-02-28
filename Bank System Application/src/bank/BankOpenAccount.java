@@ -10,11 +10,6 @@ public class BankOpenAccount {
     }
 
     protected static void run(User user) throws SQLException {
-        // insert this log
-        BankUtil.insertIntoLogTable(new Log(
-                user.getUsername(), ActivityType.OpenBankAccount, null
-        ));
-        // the run body
         UserBankAccount newAccount;
         int typeID, currencyID, statusID, balance;
         BankAccountType bankAccountType;

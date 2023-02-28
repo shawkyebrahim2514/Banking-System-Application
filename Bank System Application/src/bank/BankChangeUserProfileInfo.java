@@ -63,9 +63,6 @@ public class BankChangeUserProfileInfo {
             System.out.print("Enter a new password: ");
             password = BankUtil.scanner.nextLine();
         } while (!BankUtil.checkPassword(password));
-        BankUtil.insertIntoLogTable(new Log(
-                user.getUsername(), ActivityType.ChangePassword, null
-        ));
         updateTable("users", "password", password, "username",
                 user.getUsername());
     }
@@ -80,9 +77,6 @@ public class BankChangeUserProfileInfo {
             System.out.print("Enter a new second name: ");
             lastName = BankUtil.scanner.nextLine();
         } while (!BankUtil.checkName(lastName));
-        BankUtil.insertIntoLogTable(new Log(
-                user.getUsername(), ActivityType.UpdatePersonalInfo, null
-        ));
         updateTable("usersInfo", "firstName", firstName, "userID",
                 user.getUsername());
         updateTable("usersInfo", "lastName", lastName, "userID",
@@ -95,9 +89,6 @@ public class BankChangeUserProfileInfo {
             System.out.print("Enter a new phone number: ");
             phoneNumber = BankUtil.scanner.nextLine();
         } while (!BankUtil.checkPhoneNumber(phoneNumber));
-        BankUtil.insertIntoLogTable(new Log(
-                user.getUsername(), ActivityType.UpdatePersonalInfo, null
-        ));
         updateTable("usersInfo", "phoneNumber", phoneNumber, "userID",
                 user.getUsername());
     }
@@ -108,9 +99,6 @@ public class BankChangeUserProfileInfo {
             System.out.print("Enter a new address: ");
             address = BankUtil.scanner.nextLine();
         } while (!BankUtil.checkAddress(address));
-        BankUtil.insertIntoLogTable(new Log(
-                user.getUsername(), ActivityType.UpdatePersonalInfo, null
-        ));
         updateTable("usersInfo", "address", address, "userID",
                 user.getUsername());
     }
@@ -121,9 +109,6 @@ public class BankChangeUserProfileInfo {
             System.out.print("Enter a new email: ");
             email = BankUtil.scanner.nextLine();
         } while (!BankUtil.checkEmail(email));
-        BankUtil.insertIntoLogTable(new Log(
-                user.getUsername(), ActivityType.UpdatePersonalInfo, null
-        ));
         updateTable("usersInfo", "email", email, "userID",
                 user.getUsername());
     }

@@ -38,7 +38,8 @@ public class BankWithdrawal {
         return Integer.valueOf(withdrawalMoney);
     }
 
-    private static void withdrawMoneyFromUserBankAccount(Integer withdrawalMoney, UserBankAccount userBankAccount) throws SQLException {
+    private static void withdrawMoneyFromUserBankAccount(Integer withdrawalMoney, UserBankAccount userBankAccount)
+            throws SQLException {
         String SQLStatement = "update userBankAccount set balance = balance - ? where id = ?";
         PreparedStatement statement = BankUtil.connection.prepareStatement(SQLStatement);
         statement.setString(1, Integer.toString(withdrawalMoney));

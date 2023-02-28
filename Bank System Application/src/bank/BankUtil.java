@@ -28,7 +28,7 @@ public class BankUtil {
 
     protected static Boolean checkEmail(String email) {
         if (email.length() > 255 || email.matches("^[\\\\w\\-\\\\.]+@([\\\\w-]+\\\\.)+[\\\\w-]{2,4}$")) {
-            System.out.println("Email isn't in the correct format!");
+            BankUtil.createMessage("Email isn't in the correct format!");
             return false;
         } else {
             return true;
@@ -37,7 +37,7 @@ public class BankUtil {
 
     protected static Boolean checkAddress(String address) {
         if (address.length() > 50) {
-            System.out.println("Address isn't in the correct format!");
+            createMessage("Address isn't in the correct format!");
             return false;
         } else {
             return true;
@@ -51,6 +51,7 @@ public class BankUtil {
         String[] validPrefixes = {"010", "011", "012", "015"};
         String prefix = phoneNumber.substring(0, 3);
         if (!Arrays.asList(validPrefixes).contains(prefix)) {
+            createMessage("Phone number isn't in the correct format!");
             return false;
         }
         return true;
@@ -58,7 +59,7 @@ public class BankUtil {
 
     protected static Boolean checkName(String name) {
         if (name.length() > 50) {
-            System.out.println("Password isn't in the correct format!");
+            createMessage("Name isn't in the correct format!");
             return false;
         } else {
             return true;
@@ -67,7 +68,7 @@ public class BankUtil {
 
     protected static Boolean checkPassword(String password) {
         if (password.length() > 50) {
-            System.out.println("Password isn't in the correct format!");
+            createMessage("Password isn't in the correct format!");
             return false;
         } else {
             return true;
@@ -91,7 +92,7 @@ public class BankUtil {
         statement.executeUpdate();
     }
 
-    protected static void createMessage(String paragraph) {
+    public static void createMessage(String paragraph) {
         int width = 200;
         int part = (width / 2) - (paragraph.length() / 2);
         String bothSides = "-".repeat(part);
