@@ -84,6 +84,14 @@ This enum class contains the allowed currency types in the bank:
 * Japanese Yen
 * Great British Pound
 
+## BankApplication
+This is the main class of the application. It provides the user with a menu to choose from: Login, Register, or Exit. Based on the user's choice, it redirects the user to the appropriate class.
+
+## BankLogin
+This class handles all functions related to user login. It prompts the user to enter their username and password and validates them against the stored user data in the database. If the validation is successful, the user is redirected to their user profile.
+
+## BankRegistration
+This class handles all functions related to user registration. It prompts the user to enter their details: username, password, first name, last name, phone number, email, and address. Once the user has entered all their details, the class validates them and stores them in the database.
 
 ## BankUserProfile Class
 The BankUserProfile class is responsible for handling all functions related to the user's profile. When the user logs in, they are redirected to their profile. In the user's profile, they can perform the following functions:
@@ -104,6 +112,7 @@ The BankOpenAccount class is responsible for handling all functions related to o
 ## BankLogs Class
 The BankLogs class is responsible for handling all functions related to viewing the user's logs. All logs that belong to the user are displayed.
 
+> Each class has its specific responsibilities, and they work together to create a complete banking application. Additionally, the application is designed using the MVC design pattern, which separates the user interface, business logic, and data storage concerns. This approach helps to keep the code clean and maintainable.
 
 ## In conclusion
 This Bank Application project is a comprehensive system that allows users to manage their banking activities such as account management, money transfers, and transaction monitoring. This project has been developed using the Java programming language and the MySQL database management system.
