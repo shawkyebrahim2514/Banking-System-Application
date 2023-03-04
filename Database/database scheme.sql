@@ -29,11 +29,11 @@ create table bankAccountTypes
     fees                     int         not null,
     interest                 int         not null,
     minimumBalanceToInterest int         not null,
-    withdrawalLimits         int         not null
+    withdrawalLimit          int         not null
 );
 
 insert into bankAccountTypes (name, minimumBalanceInAccount, fees, interest, minimumBalanceToInterest,
-                              withdrawalLimits)
+                              withdrawalLimit)
 values ('Basic', 0, 2, 4, 1000, 50),
        ('Saving', 500, 3, 5, 750, 150);
 
@@ -64,21 +64,42 @@ values ('Dollar', '$'),
 
 create table userBankAccount
 (
-    id         int auto_increment primary key,
-    username   varchar(50) not null,
-    typeID     int         not null,
-    currencyID int         not null,
-    statusID   int         not null,
-    balance    int         not null,
-    createdAt  timestamp default current_timestamp,
-    updatedAt  timestamp default current_timestamp on update current_timestamp,
+    id                       int auto_increment primary key,
+    username                 varchar(50) not null,
+    typeID                   int         not null,
+    currencyID               int         not null,
+    statusID                 int         not null,
+    balance                  int         not null,
+    createdAt                timestamp            default current_timestamp,
+    withdrawalLimit          int         not null,
+    lastResetWithdrawalLimit timestamp   not null default current_timestamp,
+    updatedAt                timestamp            default current_timestamp on update current_timestamp,
     foreign key (typeID) references bankAccountTypes (id),
     foreign key (username) references users (username),
     foreign key (statusID) references status (id),
     foreign key (currencyID) references currencies (id),
-    INDEX idx_usersBankAccount_balance (balance),
-    INDEX idx_usersBankAccount_createAt (createdAt)
+    INDEX idx_balance (balance),
+    INDEX idx_lastResetWithdrawalLimit (lastResetWithdrawalLimit)
 );
+
+CREATE EVENT reset_withdrawal_limit
+    ON SCHEDULE
+        EVERY 1 DAY
+            STARTS CURRENT_TIMESTAMP
+    DO
+    UPDATE userBankAccount
+    SET withdrawalLimit          = (SELECT withdrawalLimit FROM bankAccountTypes WHERE id = typeID),
+        lastResetWithdrawalLimit = current_timestamp
+    WHERE lastResetWithdrawalLimit <= DATE_SUB(CURRENT_TIMESTAMP, INTERVAL 30 DAY);
+
+
+CREATE TRIGGER set_default_withdrawalLimit
+    BEFORE INSERT
+    ON userBankAccount
+    FOR EACH ROW
+BEGIN
+    SET NEW.withdrawalLimit = (SELECT withdrawalLimit FROM bankAccountTypes WHERE id = NEW.typeID);
+END;
 
 create table transactionTypes
 (
@@ -132,7 +153,7 @@ CREATE TABLE logs
 );
 
 -- insert changing of password in logs
-CREATE TRIGGER insert_changePassword_into_logs
+CREATE TRIGGER insert_changePassword_log
     AFTER UPDATE
     ON users
     FOR EACH ROW
@@ -141,7 +162,7 @@ BEGIN
 END;
 
 -- insert changing of personal info in logs
-CREATE TRIGGER insert_changePersonalInfo_into_logs
+CREATE TRIGGER insert_changePersonalInfo_log
     AFTER UPDATE
     ON usersInfo
     FOR EACH ROW
@@ -150,7 +171,7 @@ BEGIN
 END;
 
 -- insert open a new bank account in logs
-CREATE TRIGGER insert_openBankAccount_into_logs
+CREATE TRIGGER insert_openBankAccount_log
     AFTER INSERT
     ON userBankAccount
     FOR EACH ROW
@@ -159,7 +180,7 @@ BEGIN
 END;
 
 -- insert close a bank account in logs (if the status id is for closed status)
-CREATE TRIGGER insert_closeBankAccount_into_logs
+CREATE TRIGGER insert_closeBankAccount_log
     AFTER UPDATE
     ON userBankAccount
     FOR EACH ROW

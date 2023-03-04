@@ -1,6 +1,6 @@
 edit the user bank account to have the number of valid limit of withdrawal
 
-This project for a bank system application, i build this project to apply what i learned from java like OO principles and clean code, in this project i used MySQL database to store and load users data
+This project for a bank system application, i build this project to apply what i learned from java like OO principles and clean code, in this project i used MySQL database to store and load users data, and i used MVC design pattern to separate concern
 The structure of the project files as follow:
 Structure classes(Scheme): ActivityType, BankAccountStatus, BankAccountType, Currency, Log, Transaction, TransactionType, User, UserBankAccount
 Main class(Execute the program): BankApplication, BankChnageUserProfileInfo, BankCloseAccount, BankDeposit, BankLogin, BankLogs, BankOpenAccount, BankRegistration, BankTransactions, BankTransfer, BankUserProfile, BankUtil, BankViewAccounts, BankWithdrawal
