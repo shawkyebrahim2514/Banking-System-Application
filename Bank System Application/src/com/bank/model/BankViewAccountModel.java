@@ -23,9 +23,11 @@ public class BankViewAccountModel {
                 Integer currencyID = resultSet.getInt("currencyID");
                 Integer statusID = resultSet.getInt("statusID");
                 Integer balance = resultSet.getInt("balance");
+                Integer withdrawalLimit = resultSet.getInt("withdrawalLimit");
                 String date = resultSet.getString("createdAt");
                 UserBankAccount bankAccount = new UserBankAccount(user.getUsername(), bankAccountID,
-                        getBankAccountType(typeID), getCurrency(currencyID), getStatus(statusID), balance, date);
+                        getBankAccountType(typeID), getCurrency(currencyID), getStatus(statusID), balance,
+                        withdrawalLimit, date);
                 bankAccounts.add(bankAccount);
             }
             statement.close();

@@ -30,7 +30,8 @@ public class BankWithdrawalModel {
     private static void withdrawMoneyFromUserBankAccount(Integer withdrawalMoney, UserBankAccount userBankAccount)
             throws SQLException {
         try {
-            String SQLStatement = "update userBankAccount set balance = balance - ? where id = ?";
+            String SQLStatement = "update userBankAccount set balance = balance - ?, " +
+                    "withdrawalLimit = withdrawalLimit - 1  where id = ?";
             PreparedStatement statement = BankUtil.connection.prepareStatement(SQLStatement);
             statement.setString(1, Integer.toString(withdrawalMoney));
             statement.setString(2, Integer.toString(userBankAccount.getBankAccountID()));

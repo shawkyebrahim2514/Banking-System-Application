@@ -23,7 +23,7 @@ public class BankOpenAccount {
         bankAccountStatusType = BankAccountStatus.typeInIndex(statusID - 1);
         balance = takeBalance(bankAccountType);
         newAccount = new UserBankAccount(user.getUsername(), null, bankAccountType, currencyType,
-                bankAccountStatusType, balance, null);
+                bankAccountStatusType, balance, null, null);
         BankOpenAccountModel.saveNewAccount(user, newAccount);
     }
 

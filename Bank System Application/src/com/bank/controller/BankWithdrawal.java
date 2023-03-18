@@ -11,6 +11,10 @@ public class BankWithdrawal {
     }
 
     protected static void run(UserBankAccount userBankAccount) throws SQLException {
+        if (userBankAccount.getWithdrawalLimit() == 0) {
+            BankWithdrawalView.showWithdrawalEnd();
+            return;
+        }
         Integer withdrawalMoney = takeMoneyToWithdraw(userBankAccount);
         // if user want to exit this action
         if (withdrawalMoney.equals(-1)) return;
