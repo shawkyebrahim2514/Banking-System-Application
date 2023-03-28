@@ -10,7 +10,7 @@ public class BankRegistrationModel {
     public static Boolean checkUniqueUsername(String username) throws SQLException {
         Boolean isUniqueUsername = null;
         try {
-            String SQLStatement = "SELECT * FROM Users WHERE username = ?";
+            String SQLStatement = "call getUserPassword(?)";
             PreparedStatement statement = BankUtil.connection.prepareStatement(SQLStatement);
             statement.setString(1, username);
             isUniqueUsername = !statement.executeQuery().next();
@@ -24,11 +24,12 @@ public class BankRegistrationModel {
     public static Boolean checkUniqueEmail(String email) throws SQLException {
         Boolean isUniqueEmail = null;
         try {
-            String SQLStatement = "SELECT * FROM usersInfo WHERE email = ?";
+            String SQLStatement = "call checkUniqueEmail(?)";
             PreparedStatement statement = BankUtil.connection.prepareStatement(SQLStatement);
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
-            isUniqueEmail = !resultSet.next();
+            resultSet.next();
+            isUniqueEmail = resultSet.getBoolean("isUniqueEmail");
             statement.close();
             resultSet.close();
         } catch (BankException e) {
@@ -53,7 +54,7 @@ public class BankRegistrationModel {
 
     private static void insertIntoUsersTable(User user) throws SQLException {
         try {
-            String SQLStatement = "insert into users (username, password) values (?, ?)";
+            String SQLStatement = "call insertUser(?,?)";
             PreparedStatement statement = BankUtil.connection.prepareStatement(SQLStatement);
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getPassword());
@@ -66,8 +67,7 @@ public class BankRegistrationModel {
 
     private static void insertIntoUsersInfoTable(User user) throws SQLException {
         try {
-            String SQLStatement = "insert into usersInfo (username, firstName, lastName, phoneNumber, address, email) " +
-                    "values (?, ?, ?, ?, ?, ?)";
+            String SQLStatement = "call insertUserInfo(?,?,?,?,?,?)";
             PreparedStatement statement = BankUtil.connection.prepareStatement(SQLStatement);
             statement.setString(1, user.getUsername());
             statement.setString(2, user.getFirstName());

@@ -13,7 +13,7 @@ public class BankViewAccountModel {
     public static List<UserBankAccount> collectUserBankAccounts(User user) throws SQLException {
         List<UserBankAccount> bankAccounts = new LinkedList<>();
         try {
-            String SQLStatement = "SELECT * FROM userBankAccount WHERE username = ?";
+            String SQLStatement = "call getUserBankAccounts(?)";
             PreparedStatement statement = BankUtil.connection.prepareStatement(SQLStatement);
             statement.setString(1, user.getUsername());
             ResultSet resultSet = statement.executeQuery();

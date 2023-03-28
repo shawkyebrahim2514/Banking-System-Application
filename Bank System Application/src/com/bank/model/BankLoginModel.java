@@ -10,7 +10,7 @@ public class BankLoginModel {
     public static String getPasswordOf(String username) throws SQLException {
         String password = null;
         try {
-            String SQLStatement = "SELECT * FROM users WHERE username = ?";
+            String SQLStatement = "call getUserPassword(?)";
             PreparedStatement statement = BankUtil.connection.prepareStatement(SQLStatement);
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
@@ -28,7 +28,7 @@ public class BankLoginModel {
     public static User collectUserData(String username, String password) throws SQLException {
         User user = null;
         try {
-            String SQLStatement = "SELECT * FROM usersInfo WHERE username = ?";
+            String SQLStatement = "call getUserInfo(?)";
             PreparedStatement statement = BankUtil.connection.prepareStatement(SQLStatement);
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();

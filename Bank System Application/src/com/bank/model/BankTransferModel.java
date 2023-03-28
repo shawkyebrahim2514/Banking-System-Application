@@ -48,13 +48,13 @@ public class BankTransferModel {
 
     private static void transferMoneyToOtherUserBankAccount(Integer transferredMoney,
                                                             Integer otherUserBankAccountID) throws SQLException {
-        String SQLStatement = "update userBankAccount set balance = balance + ? where id = ?";
+        String SQLStatement = "call updateBankAccountBalance(?,?)";
         updateUserBankAccountTable(SQLStatement, transferredMoney, otherUserBankAccountID);
     }
 
     private static void withdrawMoneyFromThisUserBankAccount(UserBankAccount userBankAccount,
                                                              Integer transferredMoney) throws SQLException {
-        String SQLStatement = "update userBankAccount set balance = balance - ? where id = ?";
+        String SQLStatement = "call updateBankAccountBalance(-?,?)";
         updateUserBankAccountTable(SQLStatement, transferredMoney, userBankAccount.getBankAccountID());
     }
 
@@ -74,29 +74,22 @@ public class BankTransferModel {
 
     public static boolean checkValidAccount(UserBankAccount userBankAccount, String otherUserBankAccountID)
             throws SQLException {
+        Boolean isValidBankAccount = null;
         try {
-            String SQLStatement = "SELECT * FROM userBankAccount WHERE id = ?";
+            String SQLStatement = "call checkValidBankAccount(?)";
             PreparedStatement statement = BankUtil.connection.prepareStatement(SQLStatement);
             statement.setString(1, otherUserBankAccountID);
             ResultSet resultSet = statement.executeQuery();
-            if (!resultSet.next()) {
-                BankTransferView.showAccountNotExist();
-                return false;
-            }
-            if (Integer.valueOf(resultSet.getString("id")).equals(userBankAccount.getBankAccountID())) {
-                BankTransferView.showSameAccount();
-                return false;
-            }
-            if (!Integer.valueOf(resultSet.getString("statusID")).equals(BankAccountStatus.ACTIVE.ordinal()
-                    + 1)) {
-                BankTransferView.showInactiveAccount();
-                return false;
+            resultSet.next();
+            isValidBankAccount = resultSet.getBoolean("isValidBankAccount");
+            if (!isValidBankAccount) {
+                BankTransferView.showInvalidAccount();
             }
             statement.close();
             resultSet.close();
         } catch (BankException e) {
             e.run();
         }
-        return true;
+        return isValidBankAccount;
     }
 }

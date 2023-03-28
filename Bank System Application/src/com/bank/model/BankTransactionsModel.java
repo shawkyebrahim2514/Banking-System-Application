@@ -13,8 +13,7 @@ public class BankTransactionsModel {
                                                         Integer offsetNumber) throws SQLException {
         List<Transaction> transactions = new LinkedList<>();
         try {
-            String SQLStatement = "SELECT * FROM transactions WHERE username = ? order by id desc " +
-                    "limit ? offset ?";
+            String SQLStatement = "call getUserTransactions(?,?,?)";
             PreparedStatement statement = BankUtil.connection.prepareStatement(SQLStatement);
             statement.setString(1, username);
             statement.setInt(2, limitNumber);
@@ -48,7 +47,7 @@ public class BankTransactionsModel {
     public static Integer getNumberOfTransactions(String username) throws SQLException {
         Integer numberOfTransactions = null;
         try {
-            String SQLStatement = "SELECT count(*) as numberOfTransactions FROM transactions WHERE username = ?";
+            String SQLStatement = "call getNumberOfUserTransactions(?)";
             PreparedStatement statement = BankUtil.connection.prepareStatement(SQLStatement);
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();

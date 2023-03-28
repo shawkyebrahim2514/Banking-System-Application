@@ -79,7 +79,7 @@ public class BankUtil {
 
     public static void insertIntoLogTable(Log newLog) throws SQLException {
         try {
-            String SQLStatement = "insert into logs (username, activityID) VALUES (?, ?)";
+            String SQLStatement = "call insertLog(?, ?)";
             PreparedStatement statement = connection.prepareStatement(SQLStatement);
             statement.setString(1, newLog.getUsername());
             statement.setString(2, String.valueOf(newLog.getType().ordinal() + 1));
@@ -93,7 +93,7 @@ public class BankUtil {
 
     public static void insertIntoTransactionsTable(Transaction transaction) throws SQLException {
         try {
-            String SQLStatement = "insert into transactions (username, amount, typeID) VALUES (?, ?, ?)";
+            String SQLStatement = "call insertTransaction(?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(SQLStatement);
             statement.setString(1, transaction.getUsername());
             statement.setInt(2, transaction.getAmount());

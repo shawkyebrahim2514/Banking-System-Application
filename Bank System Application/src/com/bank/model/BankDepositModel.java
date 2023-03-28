@@ -31,7 +31,7 @@ public class BankDepositModel {
     public static void depositMoneyToUserBankAccount(Integer addedMoney, UserBankAccount userBankAccount)
             throws SQLException {
         try {
-            String SQLStatement = "update userBankAccount set balance = balance + ? where id = ?";
+            String SQLStatement = "call updateBankAccountBalance(?,?)";
             PreparedStatement statement = BankUtil.connection.prepareStatement(SQLStatement);
             statement.setString(1, Integer.toString(addedMoney));
             statement.setString(2, Integer.toString(userBankAccount.getBankAccountID()));

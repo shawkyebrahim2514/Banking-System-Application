@@ -14,7 +14,7 @@ public class BankLogsModel {
     public static Integer getNumberOfLogs(User user) throws SQLException {
         Integer numberOfLogs = null;
         try {
-            String SQLStatement = "SELECT count(*) as numberOfLogs FROM logs WHERE username = ?";
+            String SQLStatement = "call getNumberOfUserLogs(?)";
             PreparedStatement statement = BankUtil.connection.prepareStatement(SQLStatement);
             statement.setString(1, user.getUsername());
             ResultSet resultSet = statement.executeQuery();
@@ -32,8 +32,7 @@ public class BankLogsModel {
             throws SQLException {
         List<Log> logs = new LinkedList<>();
         try {
-            String SQLStatement = "SELECT activityID, createdAt FROM logs WHERE username = ? order by id desc " +
-                    "limit ? offset ?";
+            String SQLStatement = "call getUserLogs(?,?,?)";
             PreparedStatement statement = BankUtil.connection.prepareStatement(SQLStatement);
             statement.setString(1, username);
             statement.setInt(2, limitNumber);

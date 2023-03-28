@@ -3,6 +3,7 @@ package com.bank.controller;
 import com.bank.model.BankTransferModel;
 import com.bank.model.UserBankAccount;
 import com.bank.view.BankTransferView;
+import com.bank.view.BankWithdrawalView;
 
 import java.sql.SQLException;
 
@@ -11,6 +12,10 @@ public class BankTransfer {
     }
 
     protected static void run(UserBankAccount userBankAccount) throws SQLException {
+        if (userBankAccount.getWithdrawalLimit() == 0) {
+            BankWithdrawalView.showWithdrawalEnd();
+            return;
+        }
         Integer otherUserBankAccountID = connectToAnotherUserBankAccount(userBankAccount);
         // if user want to exit this action
         if (otherUserBankAccountID.equals(-1)) return;
@@ -31,6 +36,10 @@ public class BankTransfer {
     private static boolean checkValidOtherUserBankAccountID(UserBankAccount userBankAccount,
                                                             String otherUserBankAccountID) throws SQLException {
         if (!otherUserBankAccountID.matches("[0-9]+")) {
+            return false;
+        }
+        if (Integer.valueOf(otherUserBankAccountID).equals(userBankAccount.getBankAccountID())) {
+            BankTransferView.showSameAccount();
             return false;
         }
         return BankTransferModel.checkValidAccount(userBankAccount, otherUserBankAccountID);
